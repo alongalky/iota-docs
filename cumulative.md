@@ -24,25 +24,25 @@ Input: G=(V, E), and a starting vertex s∈V.
 It can be shown inductively that each step in the iteration calculates the current vertice's cumulative weight correctly, assuming the cumulative weight of all previous vertices is correct.
 
 ## Time complexity:
-1. Computing A<sub>s</sub> and sorting topologically are both O(|A<sub>s</sub>|+|E(A<sub>s</sub>)|), where E(A<sub>s</sub>) are the edges in the sub DAG comprised of the vertics of A<sub>s</sub>.
+1. Computing A<sub>s</sub> and sorting topologically are both O(|A<sub>s</sub>|+|E(A<sub>s</sub>)|), where E(A<sub>s</sub>) are the edges in the sub-DAG comprised of the vertics of A<sub>s</sub>.
 1. The iteration is also O(|A<sub>s</sub>|+|E(A<sub>s</sub>)|), assuming the set unions are done in O(1).
 
 All in all, this algorithm runs in linear time.
 
 ## Space complexity
-This is the interesting part. Computing the subtree and sorting topologically both are O(|A<sub>s</sub>|+|E(A<sub>s</sub>)|) in memory, but the ancestors sets A<sub>v</sub> can get quite large. A naive worst case analysis is that each vertex has O(|A<sub>s</sub>|) ancestors, and so the memory used is O(|A<sub>s</sub>|<sup>2</sup>), which may be prohibitive.
+This is the interesting part. Computing the subgraph and sorting topologically both are O(|A<sub>s</sub>|+|E(A<sub>s</sub>)|) in memory, but the ancestors sets A<sub>v</sub> can get quite large. A naive worst case analysis is that each vertex has O(|A<sub>s</sub>|) ancestors, and so the memory used is O(|A<sub>s</sub>|<sup>2</sup>), which may be prohibitive.
 
-This bound can be lowered by a factor: if v<sub>i</sub> is the i-th vertex in the topological ordering, it can have at most i ancestors: |A<sub>v<sub>i</sub></sub>|<= i. This means the total memory used is bound by the arithmetic series (1,2,3,4,...), and this puts the bound at O(|A<sub>s</sub>|<sup>2</sup>/2).
+This bound can be lowered by a factor: if v<sub>i</sub> is the i-th vertex in the topological ordering, it can have at most i ancestors: |A<sub>v<sub>i</sub></sub>|<= i. This means the total memory used is bound by the arithmetic sum 1+2+3+4+...+|A<sub>s</sub>|, and this puts the bound at O(|A<sub>s</sub>|<sup>2</sup>/2).
 
-We can get a slightly better factor, by noticing that at the i-th step |A<sub>v</sub>|<=i for all v. This is because only vertices that have an index lower than i in the topological ordering may be included in the ancestor set. This means in the first step the bound is |A<sub>s</sub>|, in the second it's 2|A<sub>s</sub>|, and in the i-th step it's i|A<sub>s</sub>|. However, because of the optimization step, at the i-th step we only store |A<sub>s</sub>|-i sets. This puts the bound at i(|A<sub>s</sub>|-i). This is maximized at i=|A<sub>s</sub>|/2, where it reaches O(|A<sub>s</sub>|<sup>2</sup>/4).
+We can get a slightly better factor, by noticing that at the i-th step |A<sub>v</sub>|<=i for all v. This is because only vertices that have an index lower than i in the topological ordering may be included in the ancestor set. This means in the first step the total memory usage is bound by |A<sub>s</sub>|, in the second by 2|A<sub>s</sub>|, and in the i-th step by i|A<sub>s</sub>|. However, because of the optimization step, at the i-th step we only store |A<sub>s</sub>|-i sets. This puts the bound at i(|A<sub>s</sub>|-i). This is maximized at i=|A<sub>s</sub>|/2, where it reaches O(|A<sub>s</sub>|<sup>2</sup>/4).
 
-We believe that actual bound is significantly lower, since we didn't take into account the tangle property that each vertex has at most 2 direct children. We present the challenge of finding it.
+We believe that actual bound is significantly lower, since we didn't take into account the tangle property that each vertex has at most 2 direct children. We are open to ideas for improvement.
 
 ## Further discussion
 1. We are looking to show that this algorithm is not memory-prohibitive for practical use in the tangle. To achieve that, we need to estimate the size of A<sub>s</sub> for a characteristic selected start vertex, which we have not yet done. This should be considered both theoretically and by looking at real tangle behavior.
 
 1. We believe that space complexity upper bound is actually lower than O(|A<sub>s</sub>|^2), due to the tangle structure, but we have yet to find a proof for this claim.
 
-1. For the case of selecting multiple starting points s<sub>1</sub>, s<sub>2</sub>, s<sub>3</sub>,... the algorithm can be modified in the following way: calculate the ancestors for each of the starting positions, and run the rest of the algorithm on the DAG made of A<sub>s<sub>1</sub></sub>∪A<sub>s<sub>2</sub></sub>∪A<sub>s<sub>3</sub></sub>∪...
+1. For the case of selecting multiple starting points s<sub>1</sub>, s<sub>2</sub>, s<sub>3</sub>,... the algorithm can be modified in the following way: calculate the ancestors for each of the starting positions, and run the rest of the algorithm on the DAG made of A<sub>s<sub>1</sub></sub>∪A<sub>s<sub>2</sub></sub>∪A<sub>s<sub>3</sub></sub>∪... Doing so will save a signficant amount of redundant calculation.
 
 1. Implementation in the IRI will not be hard, but will require proper testing to make sure the memory consumption does not overflow.
