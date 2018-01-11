@@ -23,16 +23,16 @@ Input: G'=(V', E'), and a starting vertex s∈V. This graph represents the main 
 ## Proof of correctness (Sketch)
 It can be shown inductively that each step in the iteration calculates the current vertice's cumulative weight correctly, assuming the cumulative weight of all previous vertices is correct.
 
-## Time complexity:
+## Time complexity
 1. Computing A(s) and sorting topologically are both O(|V|+|E|). However, in the special case of a tangle, each vertex has exactly two outgoing edges, which implies |E|<=2|V|. This means the runtime is actually O(|V|).
 1. The loop also runs in O(|V|), assuming the [set unions are done in O(1)](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Time_complexity).
 
 All in all, this algorithm runs in linear time with respect to |V|.
 
 ## Space complexity
-This is the interesting part. Computing the subgraph and sorting topologically both are O(|V|+|E|) in memory, and in the tangle case O(|V|). However, the ancestors sets A(v) can get quite large.
+This is the interesting part. Computing the subgraph and sorting topologically both are O(|V|+|E|) in memory, and in the tangle case O(|V|). However, the ancestor sets A(v) can get quite large.
 
-Let us define S=Σ<sub>v∈V</sub> |A(v)|, the sum of the cradinalities of all ancestor sets. A naive worst case analysis implies an upper bound of S<=|V|<sup>2</sup>, since each vertex has at most |V| ancestors.
+Let us define S=Σ<sub>v∈V</sub> |A(v)|, the sum of the cardinalities of all ancestor sets. A naive worst case analysis implies an upper bound of S<=|V|<sup>2</sup>, since each vertex has at most |V| ancestors.
 
 This bound can be lowered by a factor: if v<sub>i</sub> is the i-th vertex in the topological ordering, it can have at most i ancestors: |A(v<sub>i</sub>)|<=i. This means the total memory used is bound by the arithmetic sum 1+2+3+4+...+|V|, and this puts the bound at |V|(|V|+1)/2≈|V|<sup>2</sup>/2.
 
