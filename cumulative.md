@@ -1,17 +1,17 @@
 # Algorithm for calculating cumulative weight
 The following is an algorithm for calculating the cumulative weight of all transactions in a subgraph in the tangle, comprised of all ancestors of some vertex `s`. This calculation is needed to perform the weighted random walk phase of the tip selection algorithm in Iota.
 
-This algorithm is very similar to the currently implemented IRI rating function, but it uses set unions instead of sums in order to achieve the correct weight function.
+This algorithm is very similar to the currently implemented IRI rating function, but it uses [set unions](https://en.wikipedia.org/wiki/Union_(set_theory)) instead of sums in order to achieve the correct weight function.
 
 ## Definitions
 Let G=(V, E) be a DAG. For each v∈V, We define A(v) to be the set of ancestors of v (those u∈V for which there is a path from u to v). By convention, v is also included in A(v).
 
-We define H(v)=|A(v)| to be the cumulative weight of v.
+We define H(v)=|A(v)| to be the cumulative weight of v. In other words, the cumulative weight of a vertex is the number of ancestors it has plus one.
 
 ## Algorithm
 Input: G'=(V', E'), and a starting vertex s∈V. This graph represents the main tangle.
 
-1. Compute A(s) by a graph traversal (BFS / DFS), and let G(V,E) be the [induced subgraph](https://en.wikipedia.org/wiki/Induced_subgraph) G[A(s)]. Note that V=A(s).
+1. Compute A(s) by a graph traversal (BFS / DFS), and let G(V,E) be the [induced subgraph](https://en.wikipedia.org/wiki/Induced_subgraph) G[A(s)]. Note that V=A(s)
 1. SortedVertices ← [topological sorting](https://en.wikipedia.org/wiki/Topological_sorting) of G
 1. Initialize A(v) ← {v} for all 
 1. For each v in SortedVertices:
