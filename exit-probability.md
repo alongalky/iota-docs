@@ -4,7 +4,7 @@ The following is an algorithm for calculating the exit probabilities of all tips
 ## Definitions
 Let G=(V, E) be a DAG, and s∈V a vertex. For each v∈V, We define P(v) to be the probability that a weighted random walk starting at s will pass through v.
 
-Let u,vV such that u approves v, we define T(v, u) to be the probability of walking from u to v. Note that this is independent of where we started the walk. We call this the _transition probability_.
+Let u,v∈V such that u approves v, we define T(v, u) to be the probability of walking from v to u. Note that this is independent of where we started the walk. We call this the _transition probability_.
 
 ### Transition probability
 To know the transition probability we first have to calculate the [cumulative weight](cumulative.md). If w(v) is the cumulative weight of v, and A(v) is the set of direct approvers of V, then:
