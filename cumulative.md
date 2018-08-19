@@ -32,9 +32,9 @@ It can be shown inductively that each step in the iteration calculates the curre
 
 ## Time complexity
 1. Computing F(s) and sorting topologically are both O(|V|+|E|). However, in the special case of a tangle, each vertex has exactly two outgoing edges, which implies |E|<=2|V|. This means the runtime is actually O(|V|).
-1. The loop also runs in O(|V|), assuming the [set unions are done in O(1)](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Time_complexity).
+1. The loop runs O(|V|) times. A naive implementation of set union takes O(|V|), so we get O(|V|<sup>2</sup>) in total.
 
-All in all, this algorithm runs in linear time with respect to |V|.
+All in all, this algorithm runs in quadratic time with respect to |V|. However, [significant](https://github.com/iotaledger/iri/issues/812) [improvements](https://github.com/iotaledger/iri/issues/813) can be introduced to reduce the set union runtime.
 
 ## Space complexity
 This is the interesting part. Computing the subgraph and sorting topologically both are O(|V|+|E|) in memory, and in the tangle case O(|V|). However, the ancestor sets F(v) can get quite large.
